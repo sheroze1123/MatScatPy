@@ -1,11 +1,14 @@
 import numpy as np
-def eval_potential(elt,j, x):
+
+def eval_potential(eltj, x):
     n = len(x)
     Vx = np.zeros(n)
-    if elt[j]['Vtype'] == 'constant':
-        for i in range (0,n):
-            Vx[i] = elt[j]['V']
-        return Vx
+    if eltj['Vtype'] == 'constant':
+        Vx = eltj['V'] + 0 * x
+    elif eltj['Vtype'] == 'function':
+        Vx = -1 #TODO
+    elif eltj['Vtype'] == 'spline':
+        Vx = -1 #TODO
     else:
-        return print('Unknown Potential Type')
-    
+        print('Unknown Potential Type')
+    return Vx

@@ -21,5 +21,5 @@ def cheb(N):
     for p in range(0,N+1):
         D[p,p] = -1*np.sum(D[p,:])
         
-    return {'D':D, 'x':x}
+    return (D, x)
                 

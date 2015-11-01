@@ -1,7 +1,7 @@
 import numpy as np
 import sys
 
-def square_well(ab=np.array([-2, -1, 1, 2]), V=np.array([0, -10, 0]), h=1, order=20):
+def square_well(ab=None, V=None, h=1, order=20):
     """Discretize a problem where the potential is given by a piecewise constant.
     
     Input:
@@ -11,7 +11,10 @@ def square_well(ab=np.array([-2, -1, 1, 2]), V=np.array([0, -10, 0]), h=1, order
       order -- maximum element order (default 20)
     """
     
-    if len(sys.argv) == 2:
+    if ab is None and V is None:
+        ab = np.array([-2, -1, 1, 2])
+        V  = np.array([0, -10, 0])
+    elif V is None:
         V  = np.pad(ab,(1,1),'constant')
         ab = np.array([-2, -1, 1, 2])
 
