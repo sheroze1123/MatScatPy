@@ -33,10 +33,14 @@ def compute_resonances(elt=None, K0=None, K1=None, K2=None, neigs=0):
     A = np.vstack((np.hstack((K0, Z)), np.hstack((Z, I))))
     B = np.vstack((np.hstack((-K1, -K2)), np.hstack((I, Z))))
 
-    (l, V) = eig(a=A, b=B)
-    if neigs is 0:
-        return (l, V)
-    else:
-        #TODO: Figure out LU decomposition and inverse iteration 
-        #TODO: When sparse, use scipy.sparse.linalg to use linear operator
-        return (l[:neigs], V[:,:neigs])
+    ll = eig(a=A, b=B, left=False, right=False)
+    ll_sorted = (np.unique(ll.round(decimals=4)))[np.argsort(np.abs(np.unique(ll.round(decimals=4))))]
+    ll_sorted = ll_sorted[np.abs(ll_sorted) < 1e308]
+    return ll_sorted * 1.0j
+    # (ll, V) = eig(a=A, b=B)
+    # if neigs is 0:
+        # return (ll*1.0j, V)
+    # else:
+        # #TODO: Figure out LU decomposition and inverse iteration 
+        # #TODO: When sparse, use scipy.sparse.linalg to use linear operator
+        # return (l[:neigs], V[:,:neigs])

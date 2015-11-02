@@ -27,8 +27,10 @@ def squarepot(VV = np.array([0,1,0]), xx = np.array([-2, -1, 1, 2]), neigs = 40)
     l = checked_resonances(elt, neigs)
 
     # #TODO: Fix plot point sizes
-    axarr[1].plot(checked_resonances(elt))
-    axarr[1].title('Pole locations')
+    l_full = checked_resonances(elt)
+    axarr[1].scatter(l_full.real, l_full.imag)
+    axarr[1].set_title('Pole locations')
+    # plt.axis('equal')
     plt.show()
 
     return l
