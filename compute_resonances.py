@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.linalg import eigh
 from problem_size import problem_size
+from form_operators import form_operators 
 
 def compute_resonances(elt=None, K0=None, K1=None, K2=None, neigs=0):
     """
@@ -26,11 +27,11 @@ def compute_resonances(elt=None, K0=None, K1=None, K2=None, neigs=0):
     N = len(K0)
 
     #TODO: Adding sparsity
-    Z = np.zeros(N)
+    Z = np.zeros((N,N))
     I = np.eye(N)
 
-    A = np.vstack( np.hstack((K0, Z)), np.hstack((Z, I)) )
-    B = np.vstack( np.hstack((-K1, -K2)), np.hstack((I, Z)) )
+    A = np.vstack((np.hstack((K0, Z)), np.hstack((Z, I))))
+    B = np.vstack((np.hstack((-K1, -K2)), np.hstack((I, Z))))
 
     (l, V) = eigh(A, B)
     if neigs is 0:

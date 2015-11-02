@@ -19,7 +19,7 @@ def checked_resonances(elt, neigs=0, tol=1e-6):
 
     elt2 = elt[:]
     for i in range(len(elt)):
-        elt2[i]['order'] = np.ceil(elt[i]['order'] * 1.5)
+        elt2[i]['order'] = int(np.ceil(elt[i]['order'] * 1.5))
 
     l1 = compute_resonances(elt=elt, neigs=neigs)
     l2 = compute_resonances(elt=elt2, neigs=neigs)
