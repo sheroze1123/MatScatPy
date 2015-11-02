@@ -1,4 +1,5 @@
-import matplotlib.pyplot as plt
+from matplotlib import *
+import numpy as np
 
 def plot_potential1(VV, xx, ax):
     """
@@ -15,5 +16,5 @@ def plot_potential1(VV, xx, ax):
 
     #TODO: Fix plot point sizes
     ax.plot(yy, WW)
-    ax.ylim([min(VV)-(max(VV)-min(VV))/3.0, max(VV)+(max(VV)-min(VV))/3.0])
+    ax.set_ylim([min(VV)-(max(VV)-min(VV))/3.0, max(VV)+(max(VV)-min(VV))/3.0])
     

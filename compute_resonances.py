@@ -1,11 +1,13 @@
 import numpy as np
 from scipy.linalg import eigh
+from problem_size import problem_size
 
-def compute_resonances(K0=None, K1=None, K2=None, neigs = 0):
+def compute_resonances(elt=None, K0=None, K1=None, K2=None, neigs=0):
     """
     Compute resonances via a generalized linear eigenvalue problem.
 
     Input:
+        elt
         K0
         K1
         K2
@@ -16,11 +18,7 @@ def compute_resonances(K0=None, K1=None, K2=None, neigs = 0):
         V
     """
 
-    if K1 is not None and K2 is not None and K3 is None:
-        neigs = K1
-
-    if K1 is None and K2 is None and K3 is None:
-        elt = K0
+    if elt is not None:
         (N, nnz) = problem_size(elt)
         issparse = (neigs != 0) and (nnz < 0.2 * N**2) and (N > 100)
         (K0, K1, K2) = form_operators(elt, issparse)

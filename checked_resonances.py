@@ -21,7 +21,8 @@ def checked_resonances(elt, neigs=0, tol=1e-6):
     for i in range(len(elt)):
         elt2[i]['order'] = np.ceil(elt[i]['order'] * 1.5)
 
-    l1 = compute_resonances(elt, neigs)
-    l2 = compute_resonances(elt2, neigs)
+    l1 = compute_resonances(elt=elt, neigs=neigs)
+    l2 = compute_resonances(elt=elt2, neigs=neigs)
 
     l = compare_eigs(l2, l1, tol)
+    return l
