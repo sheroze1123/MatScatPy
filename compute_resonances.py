@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.linalg import eigh
+from scipy.linalg import eig
 from problem_size import problem_size
 from form_operators import form_operators 
 
@@ -33,7 +33,7 @@ def compute_resonances(elt=None, K0=None, K1=None, K2=None, neigs=0):
     A = np.vstack((np.hstack((K0, Z)), np.hstack((Z, I))))
     B = np.vstack((np.hstack((-K1, -K2)), np.hstack((I, Z))))
 
-    (l, V) = eigh(A, B)
+    (l, V) = eig(a=A, b=B)
     if neigs is 0:
         return (l, V)
     else:

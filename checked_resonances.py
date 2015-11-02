@@ -1,6 +1,7 @@
 from compute_resonances import compute_resonances
 from compare_eigs import compare_eigs
 import numpy as np
+import copy
 
 def checked_resonances(elt, neigs=0, tol=1e-6):
     """
@@ -17,7 +18,7 @@ def checked_resonances(elt, neigs=0, tol=1e-6):
 
     """
 
-    elt2 = elt[:]
+    elt2 = copy.deepcopy(elt)
     for i in range(len(elt)):
         elt2[i]['order'] = int(np.ceil(elt[i]['order'] * 1.5))
 

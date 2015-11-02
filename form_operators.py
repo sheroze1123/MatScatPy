@@ -14,12 +14,12 @@ def form_operators(elt,is_sparse = 0):
         
     base = 0
     for j in range(0,nelt):
-        order = elt[j]['order']
-        (D, x) = cheb(order)
-        lelt = elt[j]['b'] - elt[j]['a']
-        xelt    = elt[j]['a']*(1-x)/2 + elt[j]['b']*(1+x)/2; #scaling from chebyshev grid to (a) and (b)
-        K0elt   = -4*np.dot(D,D)/lelt**2 + np.diag(eval_potential(elt[j], xelt))
-        K0elt[0,:]   = -2*D[0,:]/lelt # derivative on top and bottom 
+        order      = elt[j]['order']
+        (D, x)     = cheb(order)
+        lelt       = elt[j]['b'] - elt[j]['a']
+        xelt       = elt[j]['a']*(1-x)/2 + elt[j]['b']*(1+x)/2; #scaling from chebyshev grid to (a) and (b)
+        K0elt      = -4*np.dot(D,D)/lelt**2 + np.diag(eval_potential(elt[j], xelt))
+        K0elt[0,:] = -2*D[0,:]/lelt # derivative on top and bottom
         K0elt[len(D)-1,:] =  2*D[len(D)-1,:]/lelt
         K0[base:base+len(D),base:base+len(D)] =  K0elt
         K2[base+1:base+order,base+1:base+order] = np.eye(order-1)
