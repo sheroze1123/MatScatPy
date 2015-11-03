@@ -23,4 +23,4 @@ def compare_eigs(ll1, ll2, tol):
 
     abs_val = np.abs(np.dot(ll1_arr, e2) - np.dot(e1, ll2_arr))
     diff = np.amin(abs_val, 1)
-    return ll1_arr[diff < 1e-1]
+    return ll1_arr[diff < tol]
