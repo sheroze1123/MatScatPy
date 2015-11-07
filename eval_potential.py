@@ -1,4 +1,5 @@
 import numpy as np
+from scipy import interpolate
 
 def eval_potential(eltj, x):
     n = len(x)
