@@ -8,7 +8,7 @@ def eval_potential(eltj, x):
     elif eltj['Vtype'] == 'function':
         Vx = -1 #TODO
     elif eltj['Vtype'] == 'spline':
-        Vx = -1 #TODO
+        Vx = interpolate.splev(x, eltj['V']) 
     else:
         print('Unknown Potential Type')
     return Vx
