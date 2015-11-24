@@ -36,9 +36,10 @@ ax1.set_ylim(-11, 1)
 for ax in [ax1, ax2]:
     ax.set_xlim(-2, 2)
     ax.grid()
-line1, = ax1.plot(x, V, marker='o', linestyle='-',color='r')
-line2, = ax2.plot(x_u, u.real, marker='o', linestyle='-',color='r')
-line2, = ax2.plot(x_u, u.imag, marker='o', linestyle='-',color='b')
+
+ax1.plot(x, V, marker='o', linestyle='-',color='r')
+ax2.plot(x_u, u.real, marker='o', linestyle='-',color='r')
+ax2.plot(x_u, u.imag, marker='o', linestyle='-',color='b')
 plt.show()
 
 print 'In addition to just displaying the potential, we can also animate the wave -- that is, we show Re(exp(i*t)*u_s), where u_s is the scattered wave function.  We will show an animation for a range of wave numbers for the incident wave'

@@ -15,6 +15,16 @@ from eval_potential import eval_potential
 from problem_size import problem_size
 from compute_scatter import compute_scatter
 
+def plot_resonance(elt, neigs=0):
+    fig, (ax1, ax2) = plt.subplots(2,1)
+    (x,V) = plot_potential(elt)
+    l = checked_resonances(elt, neigs)
+    ax1.plot(x, V, marker='o', linestyle='-',color='r')
+    ax1.set_title("Potential")
+    ax2.plot(l.real, l.imag, marker='o', linestyle='',color='b')
+    ax2.set_title("Pole locations")
+    plt.show()
+
 def plot_potential1(VV, xx, ax):
     """
     Plot the potential with continuous lines.
