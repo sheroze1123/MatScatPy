@@ -14,6 +14,7 @@ from plotting import plot_potential
 from square_well import square_well
 from compute_scatter import compute_scatter
 from plotting import plot_fields
+from plotting import animate_wave
 
 print 'In the first example, we show how the eigenvalues and resonances \
 change as the depth of a square potential well changes.'
@@ -31,6 +32,10 @@ x_u = plot_fields(elt, u)
 fig, (ax1, ax2) = plt.subplots(2,1)
 
 # intialize two line objects (one in each axes)
+ax1.set_ylim(-11, 1)
+for ax in [ax1, ax2]:
+    ax.set_xlim(-2, 2)
+    ax.grid()
 line1, = ax1.plot(x, V, marker='o', linestyle='-',color='r')
 line2, = ax2.plot(x_u, u.real, marker='o', linestyle='-',color='r')
 line2, = ax2.plot(x_u, u.imag, marker='o', linestyle='-',color='b')
@@ -40,4 +45,4 @@ print 'In addition to just displaying the potential, we can also animate the wav
 raw_input('Press Enter to begin\n')
 
 ks = np.linspace(0.8,1.2,3)
-animate_wave(ks)
+animate_wave(elt, ks)

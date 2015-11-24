@@ -4,11 +4,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
 import matplotlib.animation as animation
+# from matplotlib import rc
+
+# rc('font',**{'family':'serif','serif':['Palatino']})
+# rc('text', usetex=True)
 
 from checked_resonances import checked_resonances
 from square_well import square_well
 from eval_potential import eval_potential
 from problem_size import problem_size
+from compute_scatter import compute_scatter
 
 def plot_potential1(VV, xx, ax):
     """
@@ -29,10 +34,7 @@ def plot_potential1(VV, xx, ax):
 
 # Returns the grid x to plot u
 def plot_fields(elt, u):
-    is_complex = (u.dtype == 'complex_')
     (N, _) = problem_size(elt)
-    print N
-
     x_tot = None
     if len(u) > N:
         x_tot = np.zeros((N+len(elt)-1,))
@@ -68,56 +70,6 @@ def plot_potential(elt):
         base = base+order+1
     return (x_tot, u)
     
-# Subclassing example from http://matplotlib.org/examples/animation/subplots.html
-class SquareWellPotential(animation.TimedAnimation):
-    def __init__(self, potentials):
-        fig = plt.figure()
-        ax1 = fig.add_subplot(2, 1, 1)
-        ax2 = fig.add_subplot(2, 1, 2)
-
-        self.potentials = potentials
-
-        ax1.set_xlabel('x')
-        ax1.set_ylabel('V(x)')
-        ax1.set_title('Potential')
-        self.line1 = Line2D([], [], color='red')
-        ax1.add_line(self.line1)
-
-        # ax1.set_xlabel('x')
-        # ax1.set_ylabel('V(x)')
-        ax2.set_title('Pole locations')
-        # self.line2 = Line2D([], [], color='blue', marker='o')
-        self.line2 = ax2.plot([], [], color='blue', marker='o')
-        # ax2.add_line(self.line2)
-
-        animation.TimedAnimation.__init__(self, fig, interval=50, blit=True, repeat=False)
-
-    def _draw_frame(self, framedata):
-        i = framedata
-        elt = square_well(ab=[-self.potentials[i]])
-        (x,u) = plot_potential(elt)
-        print "X:"
-        print x
-        print "U:"
-        print u
-        l = checked_resonances(elt, 20)
-        print "L:"
-        print l
-        # self.line2.set_data(x, u)
-        self.line2.set_xdata(l.real)
-        self.line2.set_ydata(l.imag)
-        # self._drawn_artists = [self.line1, self.line2]
-        self._drawn_artists = [self.line1]
-
-    def new_frame_seq(self):
-        return iter(range(self.potentials.size))
-
-    def _init_draw(self):
-        lines = [self.line1]
-        for l in lines:
-            l.set_data([], [])
-
-
 def sq_potential(potentials):
     fig, (ax1, ax2) = plt.subplots(2,1)
 
@@ -144,11 +96,7 @@ def sq_potential(potentials):
 
         xmin = np.min(x) - 1
         xmax = np.max(x) + 1
-        ymin = np.min(V) - 1
-        ymax = np.max(V) + 1
         ax1.set_xlim(xmin, xmax)
-        ax1.set_ylim(ymin, ymax)
-        ax1.figure.canvas.draw()
 
         xmin = np.min(l_real) - 1
         xmax = np.max(l_real) + 1
@@ -156,61 +104,65 @@ def sq_potential(potentials):
         ymax = np.max(l_imag) + 1
         ax2.set_xlim(xmin, xmax)
         ax2.set_ylim(ymin, ymax)
-        ax2.figure.canvas.draw()
 
         line[0].set_data(x, V)
         line[1].set_data(l_real, l_imag)
+        ax1.figure.canvas.draw()
+        ax2.figure.canvas.draw()
         return line
 
     ani = animation.FuncAnimation(fig, run, data_gen, blit=True, interval=100,
         repeat=False)
-    # ani.save('animation.mp4')
+    # ani.save('square_potential_well.mp4', bitrate=-1, dpi=200)
     plt.show()
 
 def animate_wave(elt, ks, N=24):
     fig, (ax1, ax2) = plt.subplots(2,1)
 
     # intialize two line objects (one in each axes)
-    line1, = ax1.plot([], [], marker='o', linestyle='',color='r')
-    line2, = ax2.plot([], [], marker='o', linestyle='',color='b')
+    line1, = ax1.plot([], [], marker='o', linestyle='',color='b')
+    line2, = ax2.plot([], [], marker='o', linestyle='-',color='r')
     line = [line1, line2]
-    (x,V) = plot_potential(elt)
 
     for ax in [ax1, ax2]:
-        ax.set_ylim(-11, 1)
-        ax.set_xlim(-2, 2)
+        ax.set_ylim(-2, 2)
+        ax.set_xlim(elt[0]['a'], elt[-1]['b'])
         ax.grid()
 
     def data_gen():
         t = 0.0
+        (x,V) = plot_potential(elt)
         for k in ks:
+            title_str = r'Scattering from $\exp{(i * %g * \pi * x)}$'%k
+            u = compute_scatter(elt, k*np.pi)
+            umax = np.max(np.abs(u))
             for i in range(N):
-                yield x, V, l.real, l.imag
+                u_real = (u * np.exp(i*2.0j*np.pi/N)).real
+                x_grid = plot_fields(elt, u)
+                yield x, V, x_grid, u_real, title_str, umax
 
     def run(data):
-        x, V, l_real, l_imag = data
+        x, V, x_grid, u_real, title_str, umax = data
 
-        xmin = np.min(x) - 1
-        xmax = np.max(x) + 1
         ymin = np.min(V) - 1
         ymax = np.max(V) + 1
-        ax1.set_xlim(xmin, xmax)
         ax1.set_ylim(ymin, ymax)
-        ax1.figure.canvas.draw()
 
-        xmin = np.min(l_real) - 1
-        xmax = np.max(l_real) + 1
-        ymin = np.min(l_imag) - 1
-        ymax = np.max(l_imag) + 1
-        ax2.set_xlim(xmin, xmax)
+        xmin = np.min(x_grid) 
+        xmax = np.max(x_grid) 
+        ymin = -umax
+        ymax =  umax
         ax2.set_ylim(ymin, ymax)
-        ax2.figure.canvas.draw()
+        ax2.set_title(title_str)
 
         line[0].set_data(x, V)
-        line[1].set_data(l_real, l_imag)
+        line[1].set_data(x_grid, u_real)
+        ax1.figure.canvas.draw()
+        ax2.figure.canvas.draw()
         return line
 
-    ani = animation.FuncAnimation(fig, run, data_gen, blit=True, interval=100,
+    ani = animation.FuncAnimation(fig, run, data_gen, blit=True, interval=200,
         repeat=False)
-    # ani.save('animation.mp4')
+    # ani.save('animated_wave_sq_well.mp4', bitrate=-1, dpi=200)
+    # ani.save('animated_wave_sq_well.gif', writer='imagemagick', fps=10)
     plt.show()
