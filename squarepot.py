@@ -34,3 +34,5 @@ def squarepot(VV = np.array([0,1,0]), xx = np.array([-2, -1, 1, 2]), neigs = 40)
     plt.show()
 
     return l
+
+squarepot()

@@ -37,6 +37,8 @@ def compute_resonances(elt=None, K0=None, K1=None, K2=None, neigs=0):
     ll_sorted = (np.unique(ll.round(decimals=4)))[np.argsort(np.abs(np.unique(ll.round(decimals=4))))]
     ll_sorted = ll_sorted[np.abs(ll_sorted) < 1e308]
     return ll_sorted * 1.0j
+
+    
     # (ll, V) = eig(a=A, b=B)
     # if neigs is 0:
         # return (ll*1.0j, V)
