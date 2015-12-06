@@ -24,5 +24,6 @@ def spline_well(xx=None, Vx=None, h=1, order=20):
         el['order'] = order
         el['Vtype'] = 'spline'
         el['V'] = pp
+        el['xx'] = xx
         elt.append(el)
     return elt
