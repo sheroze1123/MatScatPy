@@ -1,3 +1,4 @@
+import numpy as np
 def cubic_spline_get_coeffs(X,Y,clamped=False, dx0=0.0, dxn=0.0):
     """
     Object: Compute the spline coefficients for a
