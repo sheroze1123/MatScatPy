@@ -1,5 +1,5 @@
 import numpy as np
-from scipy import interpolate
+from clampedspline import *
 
 def eval_potential(eltj, x):
     n = len(x)
@@ -13,7 +13,7 @@ def eval_potential(eltj, x):
             Vx = eltj['V'](x)
 
     elif eltj['Vtype'] == 'spline':
-        Vx = interpolate.splev(x, eltj['V']) 
+        Vx, DVx, DDVx = cubic_spline_evaluate(x, eltj['V'], eltj['xx'])
     else:
         print('Unknown Potential Type')
     return Vx
