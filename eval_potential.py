@@ -2,6 +2,11 @@ import numpy as np
 from clampedspline import *
 
 def eval_potential(eltj, x):
+    """
+    Evaluate the potential associated with the mesh element
+    eltj at x
+    """
+
     n = len(x)
     Vx = np.zeros(n)
     if eltj['Vtype'] == 'constant':

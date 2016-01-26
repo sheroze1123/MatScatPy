@@ -130,7 +130,7 @@ def animate_wave(elt, ks, N=24):
     fig, (ax1, ax2) = plt.subplots(2,1)
 
     # intialize two line objects (one in each axes)
-    line1, = ax1.plot([], [], marker='o', linestyle='',color='b')
+    line1, = ax1.plot([], [], marker='o', linestyle='-',color='b')
     line2, = ax2.plot([], [], marker='o', linestyle='-',color='r')
     line = [line1, line2]
 
@@ -143,7 +143,7 @@ def animate_wave(elt, ks, N=24):
         t = 0.0
         (x,V) = plot_potential(elt)
         for k in ks:
-            title_str = r'Scattering from $\exp{(i * %g * \pi * x)}$'%k
+            title_str = r'Scattering from $\exp{(%g \pi x i)}$'%k
             u = compute_scatter(elt, k*np.pi)
             umax = np.max(np.abs(u))
             for i in range(N):
@@ -171,7 +171,7 @@ def animate_wave(elt, ks, N=24):
         ax2.figure.canvas.draw()
         return line
 
-    ani = animation.FuncAnimation(fig, run, data_gen, blit=True, interval=200,
+    ani = animation.FuncAnimation(fig, run, data_gen, blit=True, interval=100,
         repeat=False)
     # ani.save('animated_wave_sq_well.mp4', bitrate=-1, dpi=200)
     # ani.save('animated_wave_sq_well.gif', writer='imagemagick', fps=10)

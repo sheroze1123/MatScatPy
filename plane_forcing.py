@@ -3,6 +3,11 @@ from problem_size import problem_size
 from eval_potential import eval_potential
 
 def plane_forcing (elt, l):
+    """
+    Compute a forcing vector corresponding to the influence of an 
+    incident wave of the form exp(l*x)
+    """
+
     z = l/1.0j
     (N, _) = problem_size(elt)
     F = np.zeros((N,), dtype='complex_')
